@@ -42,7 +42,7 @@ public class CandidateControllerTest {
 
     @SpyBean
     private CandidateComponent candidateComponent;
-
+// Ici,il me manque une configuration pour pouvoir supprimer tous en cascade sinon y'aura une erreur violation de contraintes
     /*@AfterEach
     public void clear(){
         candidateRepository.deleteAll();
@@ -62,15 +62,13 @@ public class CandidateControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
-    //implementer cette methode
     @Test
     void testGetFoundCandidateAverage() {
         // Given
-        Long candidateId = 1L;
         // Création d'un candidat avec des évaluations
         final CandidateEntity candidateEntity = CandidateEntity
                 .builder()
-                .id(candidateId)
+                .id(1L)
                 .email("salut@gmail.com")
                 .birthDate(LocalDate.of(2007, 5, 3))
                 .build();
@@ -83,7 +81,6 @@ public class CandidateControllerTest {
                 .build();
         examRepository.save(examEntity);
 
-        // Créer des évaluations associées au candidat
         // Création des évaluations associées au candidat
         CandidateEvaluationGridEntity candidateEvaluationGridEntity = CandidateEvaluationGridEntity
                 .builder()
@@ -108,7 +105,7 @@ public class CandidateControllerTest {
         examEntity.setCandidateEvaluationGridEntities(Set.of(candidateEvaluationGridEntity,candidateEvaluationGridEntity1));
 
         // When
-        ResponseEntity<Double> response = testRestTemplate.exchange("/api/candidates/{candidateId}/average", HttpMethod.GET, null, Double.class, candidateId);
+        ResponseEntity<Double> response = testRestTemplate.exchange("/api/candidates/{candidateId}/average", HttpMethod.GET, null, Double.class, 1L);
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
